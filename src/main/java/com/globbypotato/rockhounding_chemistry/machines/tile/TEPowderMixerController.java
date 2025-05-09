@@ -252,28 +252,32 @@ public class TEPowderMixerController extends TileEntityInv implements IInternalS
 		TEMaterialCabinetBase materialCabinet = getMaterialCabinet();
 
 		// This shouldn't happen, but it just check to be safe
-		if (currentRecipe == null || elementsCabinet == null || materialCabinet == null)
+		if (currentRecipe == null)
 			return false;
 	
 		outer: for(int i = 0; i < currentRecipe.getElements().size(); i++) {
 			String recipeIngredient = currentRecipe.getElements().get(i);
 			int recipeQuantity = currentRecipe.getQuantities().get(i);
 
-			for (ElementsCabinetRecipe element : elementsCabinet.MATERIAL_LIST) {
-				if (element.getOredict().matches(recipeIngredient) && element.getAmount() >= recipeQuantity) {
-					// Valid match
-					continue outer;
+			if (elementsCabinet != null) {
+				for (ElementsCabinetRecipe element : elementsCabinet.MATERIAL_LIST) {
+					if (element.getOredict().matches(recipeIngredient) && element.getAmount() >= recipeQuantity) {
+						// Valid match
+						continue outer;
+					}
 				}
 			}
 
-			for (MaterialCabinetRecipe material : materialCabinet.MATERIAL_LIST) {
-				if (material.getOredict().matches(recipeIngredient) && material.getAmount() >= recipeQuantity) {
-					// Valid match
-					continue outer;
+			if (materialCabinet != null) {
+				for (MaterialCabinetRecipe material : materialCabinet.MATERIAL_LIST) {
+					if (material.getOredict().matches(recipeIngredient) && material.getAmount() >= recipeQuantity) {
+						// Valid match
+						continue outer;
+					}
 				}
 			}
 
-			// No matches
+			// Ingredient wasn't matched
 			return false;
 		}
 
